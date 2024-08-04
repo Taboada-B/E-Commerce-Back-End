@@ -27,7 +27,6 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: "Error recieving products" })
   }
 
-
 });
 
 // get one product
@@ -66,14 +65,12 @@ router.get('/:id', async (req, res) => {
 
 // create new product
 router.post('/', (req, res) => {
-  /* req.body should look like this...
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
-    }
-  */
+  // {
+  //   "product_name": "Basketball",
+  //   "price": 200.00,
+  //   "stock": 3,
+  //   "tagIds": [1, 2, 3, 4]
+  // }
 
   Product.create(req.body)
     .then((product) => {
@@ -142,8 +139,22 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
+  try {
+    const deleted = await Product.destroy({
+      where: { id: req.params.id }
+    });
+    res.status(200).json({ message: 'Product deleted successfully' });
+    if (!deleted) {
+      res.status(404).json({ message: 'Product not found' });
+      return;
+    }
+
+  } catch (error) {
+    console.error(error); // Log the error to the console
+    res.status(500).json({ message: "Error deleting product" });
+  }
 });
 
 module.exports = router;
