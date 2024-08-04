@@ -5,13 +5,27 @@ const Tag = require('./Tag');
 const ProductTag = require('./ProductTag');
 
 // Products belongsTo Category
-
-
+Product.belongsTo(Category, {
+  foreignKey: 'category_id', // category_id from Products
+});
 // Categories have many Products
-
+Category.hasMany(Product, {
+  foreignKey: 'categor_id',  // many products connected to category through category_id
+});
 // Products belongToMany Tags (through ProductTag)
+//Establishes a many-to-many relationship where each 
+//Product can have multiple Tags and each Tag can be associated with multiple Products 
+Product.belongsToMany(Tag, {
+  through: ProductTag,
+  foreignKey: 'product_id',
+});
 
 // Tags belongToMany Products (through ProductTag)
+
+Tag.belongsToMany(Product, {
+  through: ProductTag,
+  foreignKey: 'tag_id',
+})
 
 module.exports = {
   Product,
@@ -19,20 +33,3 @@ module.exports = {
   Tag,
   ProductTag,
 };
-
-// example below 
-// const Reader = require('./Reader');
-// const LibraryCard = require('./LibraryCard');
-
-// Reader.hasOne(LibraryCard, {
-//   foreignKey: 'reader_id',
-//   // When we delete a Reader, make sure to also delete the associated Library Card.
-//   onDelete: 'CASCADE',
-// });
-
-// LibraryCard.belongsTo(Reader, {
-//   foreignKey: 'reader_id',
-// });
-
-// // We package our two models and export them as an object so we can import them together and use their proper names
-// module.exports = { Reader, LibraryCard };
