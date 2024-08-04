@@ -10,7 +10,7 @@ Product.belongsTo(Category, {
 });
 // Categories have many Products
 Category.hasMany(Product, {
-  foreignKey: 'categor_id',  // many products connected to category through category_id
+  foreignKey: 'category_id',  // many products connected to category through category_id
 });
 // Products belongToMany Tags (through ProductTag)
 //Establishes a many-to-many relationship where each 
