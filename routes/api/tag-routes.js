@@ -5,7 +5,6 @@ const { Tag, Product, ProductTag } = require('../../models');
 
 router.get('/', async (req, res) => {
   // find all tags
-  // be sure to include its associated Product data
   try {
     const tags = await Tag.findAll({
       include: [{ model: Product, through: ProductTag, attributes: ['id', 'product_name'] }]
@@ -15,7 +14,7 @@ router.get('/', async (req, res) => {
     res.status(500).json({ message: 'Error retrieving tags' });
   }
 });
-
+// /api/tags/id
 router.get('/:id', async (req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
@@ -34,6 +33,10 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// api/tags
+// body {
+// "tag_name": "jazz music"
+//}
 router.post('/', async (req, res) => {
   // create a new tag
   try {
@@ -43,7 +46,10 @@ router.post('/', async (req, res) => {
     res.status(400).json({ message: 'Error creating tag' });
   }
 });
-
+// api/tags/id
+// body {
+// "tag_name": "hip hop music"
+//}
 router.put('/:id', async (req, res) => {
   // update a tag's name by its `id` value
   try {
@@ -61,7 +67,7 @@ router.put('/:id', async (req, res) => {
     res.status(400).json({ message: 'Error updating tag' });
   }
 });
-
+// api/tags/id
 router.delete('/:id', async (req, res) => {
   // delete on tag by its `id` value
   try {
